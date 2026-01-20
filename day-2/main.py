@@ -140,16 +140,22 @@ def update_user(user_id: int, user_update: UserCreate, db: Session = Depends(get
 @app.delete("/users/{user_id}")
 def delete_user(user_id: int, db: Session = Depends(get_db)):
     # Find User
-
     db_user = db.query(User).filter(User.id == user_id).first()
 
     if not db_user:
         raise HTTPException(status_code=404, detail="User not found")
     
+    # Delete user 
     db.delete(db_user)
     db.commit()
 
     return {"message": "User deleted successfully", "user_id": user_id}
+
+"""
+SQL Equivalent :
+
+DELETE FROM users WHERE id = 1;
+"""
     
 
 
